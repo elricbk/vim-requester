@@ -7,22 +7,22 @@ Vim plugin for making requests and editing URLs in Vim.
 This plugin does two rather different but connected things.
 
 **First**, it allows you to conveniently edit long and encoded URLs.
-If you need from time to time debug some requests to (usually) internal services you know that URLs may get ugly.
+If you from time to time need to debug some requests to (usually) internal services you know that URLs may get ugly.
 They may be huge, may use percent encoding, may contain some unnecessary (or sensitive) information.
-And editing of theses URL is not very easy.
+And editing of these URL is not very easy.
 I've tried a couple of browser extensions and was unhappy with results.
-So here you have a couple of bindings to split request (all query parameters go to separate line each) and join (reverse last operation).
+So here we have a couple of bindings to split request (all query parameters go to separate line each) and join request (reverse last operation).
 This allows you to quickly delete/modify/add query parameters.
 
-**Second**, it allows you to run resulting request with some command.
-The simplest (and default) case is request URL with `curl -L --silent "{}"`.
+**Second**, it allows you to run resulting request via some command.
+The simplest (and default) case is getting URL with `curl -L --silent "{}"`.
 Curly braces are replaced with resulting URL.
-The output of command is places in scratch buffer.
-You may set file type for response (to have nicely highlighted XML/JSON).
+The output of command is placed in a scratch buffer.
+You may set filetype for response (to have nicely highlighted HTML/XML/JSON/whatever).
 You can customize command and/or resulting filetype as you wish.
 I.e. use `curl -L --silent "{}" | jq . -` for JSON or `curl -L --silent "{}" | xmllint --format -` for XML.
-This again replaces some browser plugins (for nice display of XML/JSON/whatever) giving you full power of Vim for editing and navigation.
-But also allows you to debug some internal binary protocols if they have some textual representations (ProtoBuf/Thrift/etc.).
+This gives you all the power of Vim for editing, navigating and folding of resulting response.
+Also it allows you to debug some internal binary protocols if they have some textual representations (ProtoBuf/Thrift/etc.).
 
 ## Requirements
 
