@@ -1,4 +1,4 @@
-function! utils#FindBufferById(buffer_id) abort
+function! requester#utils#FindBufferById(buffer_id) abort
     if (bufexists(a:buffer_id))
         let mpcwin = bufwinnr(a:buffer_id) 
         if (mpcwin == -1)
@@ -11,13 +11,13 @@ function! utils#FindBufferById(buffer_id) abort
     endif
 endfunction
 
-function! utils#SetupScratchBuffer()
+function! requester#utils#SetupScratchBuffer()
     setlocal buftype=nofile
     setlocal bufhidden=hide
     setlocal noswapfile
 endfunction
 
-function! utils#RightPad(str, len)
+function! requester#utils#RightPad(str, len)
     if len(a:str) >= a:len
         return a:str
     endif

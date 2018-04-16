@@ -1,4 +1,4 @@
-function! urlparse#UrlParse(request)
+function! requester#urlparse#UrlParse(request)
     let l:url_wrapper = []
     let l:params = []
 
@@ -24,7 +24,7 @@ endpython
     return result
 endfunction
 
-function! urlparse#UrlUnparse(url, params) abort
+function! requester#urlparse#UrlUnparse(url, params) abort
     let result_wrapper = []
 python << endpython
 import vim
