@@ -17,7 +17,8 @@ if !exists('g:vim_requester_default_filetype')
     let g:vim_requester_default_filetype = 'html'
 endif
 
-set iskeyword+=@-@
+setlocal iskeyword+=@-@
+setlocal commentstring=\#\%s
 
 nnoremap <Plug>(requester-split-line)
     \ :<C-u>call requester#SplitUrl()<CR>
