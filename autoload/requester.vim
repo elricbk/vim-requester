@@ -16,7 +16,7 @@ function! requester#SplitUrl() abort
     endfor
 
     call append(line('.'), lines)
-    normal "_dd
+    normal! "_dd
 endfunction
 
 " Replaces last selection with URL builded from this selection
@@ -24,6 +24,6 @@ function! requester#JoinUrl() abort
     let result = requester#main#ParseRequestLines(line("'<"), line("'>"))
     let a = @a
     let @a = result.url
-    normal gv"ap
+    normal! gv"ap
     let @a = a
 endfunction
