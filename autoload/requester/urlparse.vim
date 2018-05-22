@@ -14,7 +14,7 @@ parse_result = urlparse.urlparse(request)
 url_wrapper.extend([
     urlparse.urlunparse(parse_result._replace(query=''))
 ])
-params.extend(urlparse.parse_qsl(parse_result.query))
+params.extend(urlparse.parse_qsl(parse_result.query, keep_blank_values=True))
 endpython
 
     let result = {}
