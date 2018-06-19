@@ -1,3 +1,22 @@
+function! requester#main#GetFiletype(lines) abort
+    if !exists('g:vim_requester_auto_filetype') || len(a:lines) == 0
+        return g:vim_requester_default_filetype
+    endif
+
+    let line = a:lines[0]
+    if line =~ 'html'
+        return 'html'
+    elseif line =~ '<xml'
+        return 'xml'
+    elseif line =~ '^ *{'
+        return 'json'
+    elseif line =~ '^ *[a-zA-Z0-9]\+:'
+        return 'pb_text'
+    else
+        return g:vim_requester_default_filetype
+    endif
+endfunction
+
 function! requester#main#MakeRequest(request_cmd, url, filetype)
     let cmd = substitute(a:request_cmd, '{}', "\\='" . a:url . "'", '')
     let response = system(cmd)
@@ -11,7 +30,11 @@ function! requester#main#MakeRequest(request_cmd, url, filetype)
 
     call requester#utils#SetupScratchBuffer()
 
-    let &filetype=a:filetype
+    if a:filetype != 0
+        let &filetype = a:filetype
+    else
+        let &filetype = requester#main#GetFileType(lines)
+    endif
 endfunction
 
 function! requester#main#ParseRequestLines(begin, end) abort
@@ -49,7 +72,7 @@ endfunction
 function! requester#main#RequesterRun()
     let result = requester#main#ParseRequestBuffer()
     let request_cmd = get(result, 'request_cmd', g:vim_requester_default_cmd)
-    let filetype = get(result, 'filetype', g:vim_requester_default_filetype)
+    let filetype = get(result, 'filetype')
     call requester#main#MakeRequest(request_cmd, result.url, filetype)
 endfunction
 

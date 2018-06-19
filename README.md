@@ -57,4 +57,5 @@ Following mappings are provided by default for `requester` filetype:
 
 * `g:vim_requester_default_cmd` – default command to run on provided URL. By default `curl -L --silent "{}"`. Can be overridden with `@request_cmd` keyword in file comments. 
 * `g:vim_requester_default_filetype` – default filetype to set on response buffer. By default `txt`. Can be overridden with `@filetype` keyword in file comments.
+* `g:vim_requester_auto_filetype` – enable simple heuristics to determine response filetype. Can detect simple HTML, XML, JSON and ProtoBuf text representation. Used only if `@filetype` is not set in requester file comments.
 * `g:vim_requester_no_mappings` – disable default mappings. If you are unhappy with default mappings you can use plugin mappings with your keys.
