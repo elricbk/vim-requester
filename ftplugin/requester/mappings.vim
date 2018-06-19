@@ -9,6 +9,6 @@ if exists('g:vim_requester_no_mappings')
     finish
 endif
 
-nmap <buffer> <Leader>r <Plug>(requester-do-request) |
-nmap <buffer> <Leader>s <Plug>(requester-split-line) |
+nmap <buffer> <Leader>r <Plug>(requester-do-request)
+nmap <buffer> <Leader>s <Plug>(requester-split-line)
 nmap <buffer> <Leader>j <Plug>(requester-join-line)

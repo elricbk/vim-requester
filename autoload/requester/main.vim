@@ -15,6 +15,11 @@ function! requester#main#MakeRequest(request_cmd, url, filetype)
 endfunction
 
 function! requester#main#ParseRequestLines(begin, end) abort
+    let REQUEST_CMD_RGX = '^# \+@request_cmd \+'
+    let FILETYPE_RGX = '^# \+@filetype \+'
+    let URL_RGX = '\v^ *(([-a-zA-Z0-9]+\.)+[-a-zA-Z0-9]+|.*://.*|/.*) *$'
+    let PARAM_RGX = '^[a-z_]\+\zs *= *'
+
     let i = a:begin
     let line_count = a:end
     let result = {}
@@ -22,13 +27,13 @@ function! requester#main#ParseRequestLines(begin, end) abort
     let params = []
     while i <= line_count
         let l = getline(i)
-        if l =~ '^# \+@request_cmd \+'
-            let result.request_cmd = substitute(l, '^# \+@request_cmd \+', '', '')
-        elseif l =~ '^# \+@filetype \+'
-            let result.filetype = substitute(l,'^# \+@filetype \+', '', '')
-        elseif l =~ '://'
+        if l =~ REQUEST_CMD_RGX
+            let result.request_cmd = substitute(l, REQUEST_CMD_RGX, '', '')
+        elseif l =~ FILETYPE_RGX
+            let result.filetype = substitute(l, FILETYPE_RGX, '', '')
+        elseif l =~ URL_RGX
             let url = l
-        elseif l =~ '^[a-z_]\+\zs *= *'
+        elseif l =~ PARAM_RGX
             call add(params, l)
         endif
         let i += 1
@@ -50,10 +55,22 @@ endfunction
 
 function! requester#main#JoinLines(begin, end) abort
     let result = requester#main#ParseRequestLines(a:begin, a:end)
-    let search = @/
-    call cursor(1, 1)
-    call search('^[^#]')
-    call append(line('.') - 1, result.url)
-    normal dG
-    let @/ = search
+    let l = a:end
+    while l >= a:begin
+        let line = getline(l)
+        let is_comment = (line =~ '^#')
+        let is_commented_param = (line =~ '^# *[a-z_]\+\zs *= *')
+        if is_comment && !is_commented_param
+            break
+        endif
+        let l -= 1
+    endwhile
+    execute 'normal! ' . (l + 1) . 'G"_dG'
+    call append(l, result.url)
+    if l == 0
+        normal! dd
+    else
+        call append(l, '')
+        normal! jj
+    endif
 endfunction

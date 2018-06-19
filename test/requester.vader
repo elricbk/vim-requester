@@ -1,0 +1,147 @@
+Before (Set mapleader):
+  Save mapleader
+  let mapleader=' '
+  set filetype=requester
+
+After (Restore mapleader):
+  Restore mapleader
+
+
+Given (URI):
+  http://example.com?a=1&b=2&c=3
+
+Do (Split URI):
+  \<Space>s
+
+Expect (Splitted URI):
+  http://example.com
+
+  a = 1
+  b = 2
+  c = 3
+
+
+Given (URI with unknown scheme):
+  ololo://example.com?p=42
+
+Do (Split URI):
+  \<Space>s
+
+Expect (Splitted URI):
+  ololo://example.com
+
+  p = 42
+
+
+Given (URI part):
+  /method?p=42
+
+Do (Split URI):
+  \<Space>s
+
+Expect (Splitted URI part):
+  /method
+
+  p = 42
+
+
+Given (URI with params with different length):
+  http://example.com?ll=42.,42.&spn=0.1,0.1&param=42
+
+Do (Split URI):
+  \<Space>s
+
+Expect (Splitted URI with indented params):
+  http://example.com
+
+  ll    = 42.,42.
+  spn   = 0.1,0.1
+  param = 42
+
+
+Given (URI with semicolons in params):
+  http://example.com?param=3;42
+
+Do (Split URI):
+  \<Space>s
+
+Expect (Param with semicolon as a whole):
+  http://example.com
+
+  param = 3;42
+
+
+Given (Splitted URI without comments):
+  http://example.com
+
+  a = 1
+  b = 2
+  c = 3
+
+Do (Join URI):
+  \<Space>j
+
+Expect (Joined URI):
+  http://example.com?a=1&b=2&c=3
+
+
+Given (Splitted URI with preceding comment):
+  # This is example of some service
+
+  http://example.com
+  param = 42
+
+Do (Join URI):
+  \<Space>j
+
+Expect (Joined URI with preceding comment and empty line):
+  # This is example of some service
+
+  http://example.com?param=42
+
+
+Given (Splitted URI with commented params):
+  http://example.com
+  #   b = 42
+  param = 42
+
+Do (Join URI):
+  \<Space>j
+
+Expect (Joined URI without commented params):
+  http://example.com?param=42
+
+
+Given (Splitted URL part):
+  /method
+  p = 42
+  q = 84
+
+Do (Join URI):
+  \<Space>j
+
+Expect (Joined URI part):
+  /method?p=42&q=84
+
+
+Given (Splitted URL without scheme):
+  www.example.com
+  p = 42
+
+Do (Join URI):
+  \<Space>j
+
+Expect (Joined URI part):
+  www.example.com?p=42
+
+
+Given (Param with slash):
+  www.example.com
+  p = test/1.x
+  q = 42
+
+Do (Join URI):
+  \<Space>j
+
+Expect (Correctly encodes param with slash):
+  www.example.com?p=test%2F1.x&q=42
