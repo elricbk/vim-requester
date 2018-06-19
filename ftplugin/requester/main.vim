@@ -14,5 +14,5 @@ if !exists('g:vim_requester_default_cmd')
 endif
 
 if !exists('g:vim_requester_default_filetype')
-    let g:vim_requester_default_filetype = 'html'
+    let g:vim_requester_default_filetype = 'txt'
 endif
