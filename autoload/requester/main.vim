@@ -1,16 +1,16 @@
-function! requester#main#GetFiletype(lines) abort
+function! requester#main#GetFileType(lines) abort
     if !exists('g:vim_requester_auto_filetype') || len(a:lines) == 0
         return g:vim_requester_default_filetype
     endif
 
     let line = a:lines[0]
-    if line =~ 'html'
-        return 'html'
-    elseif line =~ '<xml'
-        return 'xml'
-    elseif line =~ '^ *{'
+    if line =~ '^ *{'
         return 'json'
-    elseif line =~ '^ *[a-zA-Z0-9]\+:'
+    elseif line =~ '<!DOCTYPE html'
+        return 'html'
+    elseif line =~ '<?xml'
+        return 'xml'
+    elseif line =~ '^ *[a-zA-Z0-9]\+ {'
         return 'pb_text'
     else
         return g:vim_requester_default_filetype
