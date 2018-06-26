@@ -17,10 +17,11 @@ function! requester#main#GetFileType(lines) abort
     endif
 endfunction
 
-function! requester#main#MakeRequest(result)
-    let request_cmd = get(a:result, 'request_cmd', g:vim_requester_default_cmd)
-    let filetype = get(a:result, 'filetype')
-    let url = a:result.url
+function! requester#main#MakeRequest(request)
+    let request_cmd = get(a:request, 'request_cmd', g:vim_requester_default_cmd)
+    let filetype = get(a:request, 'filetype')
+    let url = a:request.url
+    let no_autoformat = get(a:request, 'no_autoformat', 0)
 
     let cmd = substitute(l:request_cmd, '{}', "\\='" . l:url . "'", '')
     let response = system(cmd)
@@ -39,8 +40,9 @@ function! requester#main#MakeRequest(result)
         let &filetype = requester#main#GetFileType(lines)
     endif
 
-    let should_autoformat = exists('g:vim_requester_autoformat') 
-        \ && has_key(g:vim_requester_autoformat, &filetype)
+    let should_autoformat = !no_autoformat &&
+        \ exists('g:vim_requester_autoformat') &&
+        \ has_key(g:vim_requester_autoformat, &filetype)
     if should_autoformat
         normal! =G
     endif
