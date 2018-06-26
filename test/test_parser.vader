@@ -4,7 +4,7 @@ Given (Lines without "no autoformat" directive):
   p = 42
 
 Execute (ParseRequestLines):
-  let result = requester#main#ParseRequestLines(1, line('$'))
+  let result = requester#parser#ParseRequestLines(1, line('$'))
 
 Then (No autoformat is not set):
   AssertEqual 0, has_key(result, 'no_autoformat')
@@ -17,7 +17,7 @@ Given (Lines with "no autoformat" directive):
   p = 42
 
 Execute (ParseRequestLines):
-  let result = requester#main#ParseRequestLines(1, line('$'))
+  let result = requester#parser#ParseRequestLines(1, line('$'))
 
 Then (no_autoformat is set):
   AssertEqual 1, result.no_autoformat
