@@ -58,3 +58,28 @@ Execute (Get filetype for unsupported data):
 
 Then (Default filetype is returned):
   AssertEqual 'txt', ft
+
+
+Given (Lines without "no autoformat" directive):
+  # This is a test
+  some://url.com
+  p = 42
+
+Execute (ParseRequestLines):
+  let result = requester#main#ParseRequestLines(1, line('$'))
+
+Then (No autoformat is not set):
+  AssertEqual 0, has_key(result, 'no_autoformat')
+
+
+Given (Lines with "no autoformat" directive):
+  # This is a test
+  # @no_autoformat
+  some://url.com
+  p = 42
+
+Execute (ParseRequestLines):
+  let result = requester#main#ParseRequestLines(1, line('$'))
+
+Then (no_autoformat is set):
+  AssertEqual 1, result.no_autoformat

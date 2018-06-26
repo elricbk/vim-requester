@@ -17,29 +17,39 @@ function! requester#main#GetFileType(lines) abort
     endif
 endfunction
 
-function! requester#main#MakeRequest(request_cmd, url, filetype)
-    let cmd = substitute(a:request_cmd, '{}', "\\='" . a:url . "'", '')
+function! requester#main#MakeRequest(result)
+    let request_cmd = get(a:result, 'request_cmd', g:vim_requester_default_cmd)
+    let filetype = get(a:result, 'filetype')
+    let url = a:result.url
+
+    let cmd = substitute(l:request_cmd, '{}', "\\='" . l:url . "'", '')
     let response = system(cmd)
     let lines = split(response, '\n')
 
     call requester#utils#FindBufferById('vim_requester.response')
+    call requester#utils#SetupScratchBuffer()
 
     normal ggdG
     call append(0, lines)
     normal gg
 
-    call requester#utils#SetupScratchBuffer()
-
-    if a:filetype != 0
-        let &filetype = a:filetype
+    if l:filetype != 0
+        let &filetype = l:filetype
     else
         let &filetype = requester#main#GetFileType(lines)
+    endif
+
+    let should_autoformat = exists('g:vim_requester_autoformat') 
+        \ && has_key(g:vim_requester_autoformat, &filetype)
+    if should_autoformat
+        normal! =G
     endif
 endfunction
 
 function! requester#main#ParseRequestLines(begin, end) abort
     let REQUEST_CMD_RGX = '^# \+@request_cmd \+'
     let FILETYPE_RGX = '^# \+@filetype \+'
+    let NO_AUTOFORMAT_RGX = '^# \+@no_autoformat'
     let URL_RGX = '\v^ *(([-a-zA-Z0-9]+\.)+[-a-zA-Z0-9]+|.*://.*|/.*) *$'
     let PARAM_RGX = '^[a-z_]\+\zs *= *'
 
@@ -54,6 +64,8 @@ function! requester#main#ParseRequestLines(begin, end) abort
             let result.request_cmd = substitute(l, REQUEST_CMD_RGX, '', '')
         elseif l =~ FILETYPE_RGX
             let result.filetype = substitute(l, FILETYPE_RGX, '', '')
+        elseif l =~ NO_AUTOFORMAT_RGX
+            let result.no_autoformat = 1
         elseif l =~ URL_RGX
             let url = l
         elseif l =~ PARAM_RGX
@@ -70,10 +82,7 @@ function! requester#main#ParseRequestBuffer() abort
 endfunction
 
 function! requester#main#RequesterRun()
-    let result = requester#main#ParseRequestBuffer()
-    let request_cmd = get(result, 'request_cmd', g:vim_requester_default_cmd)
-    let filetype = get(result, 'filetype')
-    call requester#main#MakeRequest(request_cmd, result.url, filetype)
+    call requester#main#MakeRequest(requester#main#ParseRequestBuffer())
 endfunction
 
 function! requester#main#JoinLines(begin, end) abort
