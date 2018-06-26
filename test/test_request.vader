@@ -1,0 +1,122 @@
+Execute (Get filetype with no option set):
+  let g:vim_requester_default_filetype = '42'
+  let ft = requester#request#GetFileType(['{"a": 1}'])
+
+Then (Default filetype is returned):
+  AssertEqual '42', ft
+
+
+Execute (Get filetype for empty lines):
+  let g:vim_requester_default_filetype = '42'
+  let g:vim_requester_auto_filetype = 1
+  let ft = requester#request#GetFileType([])
+
+Then (Default filetype is returned):
+  AssertEqual '42', ft
+
+
+Execute (Get filetype for JSON data):
+  let g:vim_requester_default_filetype = 'txt'
+  let g:vim_requester_auto_filetype = 1
+  let ft = requester#request#GetFileType(['{"a": 1}'])
+
+Then (JSON filetype is returned):
+  AssertEqual 'json', ft
+
+
+Execute (Get filetype for XML data):
+  let g:vim_requester_default_filetype = 'txt'
+  let g:vim_requester_auto_filetype = 1
+  let ft = requester#request#GetFileType(['<?xml version="1.0"?>'])
+
+Then (XML filetype is returned):
+  AssertEqual 'xml', ft
+
+
+Execute (Get filetype for HTML data):
+  let g:vim_requester_default_filetype = 'txt'
+  let g:vim_requester_auto_filetype = 1
+  let ft = requester#request#GetFileType(['<!DOCTYPE html>'])
+
+Then (XML filetype is returned):
+  AssertEqual 'html', ft
+
+
+Execute (Get filetype for protobuf data):
+  let g:vim_requester_default_filetype = 'txt'
+  let g:vim_requester_auto_filetype = 1
+  let ft = requester#request#GetFileType(['message {'])
+
+Then (pb_text filetype is returned):
+  AssertEqual 'pb_text', ft
+
+
+Execute (Get filetype for unsupported data):
+  let g:vim_requester_default_filetype = 'txt'
+  let g:vim_requester_auto_filetype = 1
+  let ft = requester#request#GetFileType(['message = "test"'])
+
+Then (Default filetype is returned):
+  AssertEqual 'txt', ft
+
+
+Execute (MakeRequest with no autoformat option set):
+  let g:vim_requester_default_cmd = ''
+  function! RunCommand(cmd)
+  endfunction
+
+  let g:Autoformat_called = 0
+  function! Autoformat()
+    let g:Autoformat_called = 1
+  endfunction
+
+  call requester#request#MakeRequest(
+  \  {'request_cmd': '', 'url': ''},
+  \  function('RunCommand'),
+  \  function('Autoformat')
+  \)
+
+Then (Autoformat is not called):
+  AssertEqual 0, g:Autoformat_called
+
+
+Execute (MakeRequest with autoformat option set):
+  let g:vim_requester_default_cmd = ''
+  function! RunCommand(cmd)
+  endfunction
+
+  let g:Autoformat_called = 0
+  function! Autoformat()
+    let g:Autoformat_called = 1
+  endfunction
+
+  let g:vim_requester_autoformat = {'txt': 1}
+  call requester#request#MakeRequest(
+  \  {'request_cmd': '', 'url': '', 'filetype': 'txt'},
+  \  function('RunCommand'),
+  \  function('Autoformat')
+  \)
+
+Then (Autoformat is called):
+  AssertEqual 1, g:Autoformat_called
+
+
+Execute (MakeRequest with autoformat option set):
+  let g:vim_requester_default_cmd = ''
+  function! RunCommand(cmd)
+  endfunction
+
+  let g:Autoformat_called = 0
+  function! Autoformat()
+    let g:Autoformat_called = 1
+  endfunction
+
+  let g:vim_requester_autoformat = {'txt': 1}
+  call requester#request#MakeRequest(
+  \  {'request_cmd': '', 'url': '', 'filetype': 'txt', 'no_autoformat': 1},
+  \  function('RunCommand'),
+  \  function('Autoformat')
+  \)
+
+Then (Autoformat is not called):
+  AssertEqual 0, g:Autoformat_called
