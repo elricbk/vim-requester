@@ -30,9 +30,9 @@ function! requester#main#MakeRequest(request)
     call requester#utils#FindBufferById('vim_requester.response')
     call requester#utils#SetupScratchBuffer()
 
-    normal ggdG
+    normal! ggdG
     call append(0, lines)
-    normal gg
+    normal! gg
 
     if l:filetype != 0
         let &filetype = l:filetype
