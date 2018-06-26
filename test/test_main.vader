@@ -83,3 +83,65 @@ Execute (ParseRequestLines):
 
 Then (no_autoformat is set):
   AssertEqual 1, result.no_autoformat
+
+
+Execute (MakeRequest with no autoformat option set):
+  let g:vim_requester_default_cmd = ''
+  function! RunCommand(cmd)
+  endfunction
+
+  let g:Autoformat_called = 0
+  function! Autoformat()
+    let g:Autoformat_called = 1
+  endfunction
+
+  call requester#main#MakeRequest(
+  \  {'request_cmd': '', 'url': ''},
+  \  function('RunCommand'),
+  \  function('Autoformat')
+  \)
+
+Then (Autoformat is not called):
+  AssertEqual 0, g:Autoformat_called
+
+
+Execute (MakeRequest with autoformat option set):
+  let g:vim_requester_default_cmd = ''
+  function! RunCommand(cmd)
+  endfunction
+
+  let g:Autoformat_called = 0
+  function! Autoformat()
+    let g:Autoformat_called = 1
+  endfunction
+
+  let g:vim_requester_autoformat = {'txt': 1}
+  call requester#main#MakeRequest(
+  \  {'request_cmd': '', 'url': '', 'filetype': 'txt'},
+  \  function('RunCommand'),
+  \  function('Autoformat')
+  \)
+
+Then (Autoformat is called):
+  AssertEqual 1, g:Autoformat_called
+
+
+Execute (MakeRequest with autoformat option set):
+  let g:vim_requester_default_cmd = ''
+  function! RunCommand(cmd)
+  endfunction
+
+  let g:Autoformat_called = 0
+  function! Autoformat()
+    let g:Autoformat_called = 1
+  endfunction
+
+  let g:vim_requester_autoformat = {'txt': 1}
+  call requester#main#MakeRequest(
+  \  {'request_cmd': '', 'url': '', 'filetype': 'txt', 'no_autoformat': 1},
+  \  function('RunCommand'),
+  \  function('Autoformat')
+  \)
+
+Then (Autoformat is not called):
+  AssertEqual 0, g:Autoformat_called

@@ -17,14 +17,14 @@ function! requester#main#GetFileType(lines) abort
     endif
 endfunction
 
-function! requester#main#MakeRequest(request)
+function! requester#main#MakeRequest(request, run_cmd, autoformat)
     let request_cmd = get(a:request, 'request_cmd', g:vim_requester_default_cmd)
     let filetype = get(a:request, 'filetype')
     let url = a:request.url
-    let no_autoformat = get(a:request, 'no_autoformat', 0)
+    let no_autoformat = get(a:request, 'no_autoformat')
 
     let cmd = substitute(l:request_cmd, '{}', "\\='" . l:url . "'", '')
-    let response = system(cmd)
+    let response = a:run_cmd(cmd)
     let lines = split(response, '\n')
 
     call requester#utils#FindBufferById('vim_requester.response')
@@ -41,10 +41,10 @@ function! requester#main#MakeRequest(request)
     endif
 
     let should_autoformat = !no_autoformat &&
-        \ exists('g:vim_requester_autoformat') &&
-        \ has_key(g:vim_requester_autoformat, &filetype)
+    \    exists('g:vim_requester_autoformat') &&
+    \    has_key(g:vim_requester_autoformat, &filetype)
     if should_autoformat
-        normal! =G
+        call a:autoformat()
     endif
 endfunction
 
@@ -83,8 +83,16 @@ function! requester#main#ParseRequestBuffer() abort
     return requester#main#ParseRequestLines(1, line('$'))
 endfunction
 
+function! requester#main#Autoformat() abort
+    normal! gg=G
+endfunction
+
 function! requester#main#RequesterRun()
-    call requester#main#MakeRequest(requester#main#ParseRequestBuffer())
+    call requester#main#MakeRequest(
+    \    requester#main#ParseRequestBuffer(),
+    \    function('system'),
+    \    function('requester#main#Autoformat'),
+    \)
 endfunction
 
 function! requester#main#JoinLines(begin, end) abort
