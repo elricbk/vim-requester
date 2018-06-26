@@ -60,7 +60,7 @@ Then (Default filetype is returned):
   AssertEqual 'txt', ft
 
 
-Execute (MakeRequest with no autoformat option set):
+Before (Setup mocks):
   let g:vim_requester_default_cmd = ''
   function! RunCommand(cmd)
   endfunction
@@ -70,6 +70,8 @@ Execute (MakeRequest with no autoformat option set):
     let g:Autoformat_called = 1
   endfunction
 
+
+Execute (MakeRequest with no autoformat option set):
   call requester#request#MakeRequest(
   \  {'request_cmd': '', 'url': ''},
   \  function('RunCommand'),
@@ -81,15 +83,6 @@ Then (Autoformat is not called):
 
 
 Execute (MakeRequest with autoformat option set):
-  let g:vim_requester_default_cmd = ''
-  function! RunCommand(cmd)
-  endfunction
-
-  let g:Autoformat_called = 0
-  function! Autoformat()
-    let g:Autoformat_called = 1
-  endfunction
-
   let g:vim_requester_autoformat = {'txt': 1}
   call requester#request#MakeRequest(
   \  {'request_cmd': '', 'url': '', 'filetype': 'txt'},
@@ -101,16 +94,7 @@ Then (Autoformat is called):
   AssertEqual 1, g:Autoformat_called
 
 
-Execute (MakeRequest with autoformat option set):
-  let g:vim_requester_default_cmd = ''
-  function! RunCommand(cmd)
-  endfunction
-
-  let g:Autoformat_called = 0
-  function! Autoformat()
-    let g:Autoformat_called = 1
-  endfunction
-
+Execute (MakeRequest with no_autoformat directive):
   let g:vim_requester_autoformat = {'txt': 1}
   call requester#request#MakeRequest(
   \  {'request_cmd': '', 'url': '', 'filetype': 'txt', 'no_autoformat': 1},
