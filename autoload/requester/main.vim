@@ -13,10 +13,12 @@ endfunction
 function! requester#main#JoinLines() abort
     let result = requester#parser#ParseRequestLines(1, line('$'))
 
+    " TODO: move to utils
     let l = line('$')
     while l >= 1
         let line = getline(l)
         let is_comment = (line =~ '^#')
+        " FIXME: use better regex for param, as this doesn't support upper case
         let is_commented_param = (line =~ '^# *[a-z_]\+\zs *= *')
         if is_comment && !is_commented_param
             break
