@@ -1,0 +1,38 @@
+Given (no_autoformat directive):
+  # @no_autoformat
+
+Execute (Set filetype):
+  set filetype=requester
+
+Then (It is highlighted as keyword):
+  AssertEqual 'requesterKeyword', SyntaxAt(1, 5)
+
+
+Given (URL with scheme):
+  http://example.com?p=42
+
+Execute (Set filetype):
+  set filetype=requester
+
+Then (It is highlighted as URL):
+  AssertEqual 'requesterURL', SyntaxAt(1, 1)
+
+
+Given (URL without scheme):
+  example.com?p=42
+
+Execute (Set filetype):
+  set filetype=requester
+
+Then (It is highlighted as URL):
+  AssertEqual 'requesterURL', SyntaxAt(1, 1)
+
+
+Given (Only URL path):
+  /list?i=42
+
+Execute (Set filetype):
+  set filetype=requester
+
+Then (It is highlighted as URL):
+  AssertEqual 'requesterURL', SyntaxAt(1, 1)

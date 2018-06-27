@@ -2,22 +2,23 @@ if exists('b:current_syntax')
     finish
 endif
 
-syntax match requestValue '\S*'
-highlight link requestValue Constant
+syntax match requesterValue '\S*'
+highlight link requesterValue Constant
 
-syntax match requestParam '^\s*\S*\s*\ze='
-highlight link requestParam Keyword
+syntax match requesterParam '^\s*\S*\s*\ze='
+highlight link requesterParam Keyword
 
-syntax match requestDelimiter "\V\zs=\ze"
-highlight link requestDelimiter Delimiter
+syntax match requesterDelimiter "\V\zs=\ze"
+highlight link requesterDelimiter Delimiter
 
-syntax keyword requestKeyword @request_cmd @filetype contained
-highlight link requestKeyword Identifier
+syntax keyword requesterKeyword @request_cmd @filetype @no_autoformat contained
+highlight link requesterKeyword Identifier
 
-syntax match requestComment "\v#.*$" contains=requestKeyword
-highlight link requestComment Comment
+syntax match requesterComment "\v#.*$" contains=requesterKeyword
+highlight link requesterComment Comment
 
-syntax match requesterURL /^[a-z]\+:\/\/\(\w\+\(:\w\+\)\?@\)\?\([A-Za-z0-9][-_0-9A-Za-z]*\.\)\{1,}\(\w\{2,}\.\?\)\{1,}\(:[0-9]\{1,5}\)\?\S*/
+syntax match requesterURL /^\([a-z]\+:\/\/\)\?\(\w\+\(:\w\+\)\?@\)\?\([A-Za-z0-9][-_0-9A-Za-z]*\.\)\{1,}\(\w\{2,}\.\?\)\{1,}\(:[0-9]\{1,5}\)\?\S*/
+syntax match requesterURL /^\/\w\+\S*/
 highlight link requesterURL Underlined
 
 let b:current_syntax = 1
