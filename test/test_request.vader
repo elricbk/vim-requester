@@ -12,6 +12,10 @@ Before (Setup mocks):
     let g:Autoformat_called = 1
   endfunction
 
+After (Remove response buffer):
+    call requester#utils#FindBufferById('vim_requester.response')
+    bd!
+
 
 Execute (MakeRequest with no request_cmd set):
   let g:vim_requester_default_cmd = '42'
