@@ -1,7 +1,7 @@
 nnoremap <Plug>(requester-split-line)
     \ :<C-u>call requester#SplitUrl()<CR>
 nnoremap <Plug>(requester-join-line)
-    \ :<C-u>call requester#main#JoinLines(1, line('$'))<CR>
+    \ :<C-u>call requester#main#JoinLines()<CR>
 nnoremap <Plug>(requester-do-request)
     \ :<C-u>call requester#main#RequesterRun()<CR>
 

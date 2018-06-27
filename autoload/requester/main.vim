@@ -10,10 +10,11 @@ function! requester#main#RequesterRun() abort
     \)
 endfunction
 
-function! requester#main#JoinLines(begin, end) abort
-    let result = requester#parser#ParseRequestLines(a:begin, a:end)
-    let l = a:end
-    while l >= a:begin
+function! requester#main#JoinLines() abort
+    let result = requester#parser#ParseRequestLines(1, line('$'))
+
+    let l = line('$')
+    while l >= 1
         let line = getline(l)
         let is_comment = (line =~ '^#')
         let is_commented_param = (line =~ '^# *[a-z_]\+\zs *= *')
@@ -22,6 +23,7 @@ function! requester#main#JoinLines(begin, end) abort
         endif
         let l -= 1
     endwhile
+
     execute 'normal! ' . (l + 1) . 'G"_dG'
     call append(l, result.url)
     if l == 0
