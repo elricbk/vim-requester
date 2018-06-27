@@ -1,13 +1,50 @@
 Before (Setup mocks):
   let g:vim_requester_default_filetype = ''
   let g:vim_requester_default_cmd = ''
+
+  let g:RunCommand_cmd = ''
   function! RunCommand(cmd)
+    let g:RunCommand_cmd = a:cmd
   endfunction
 
   let g:Autoformat_called = 0
   function! Autoformat()
     let g:Autoformat_called = 1
   endfunction
+
+
+Execute (MakeRequest with no request_cmd set):
+  let g:vim_requester_default_cmd = '42'
+  call requester#request#MakeRequest(
+  \  {'url': ''},
+  \  function('RunCommand'),
+  \  function('Autoformat')
+  \)
+
+Then (Default command is used):
+  AssertEqual '42', g:RunCommand_cmd
+
+
+Execute (MakeRequest with request_cmd set):
+  call requester#request#MakeRequest(
+  \  {'request_cmd': 'wget', 'url': ''},
+  \  function('RunCommand'),
+  \  function('Autoformat')
+  \)
+
+Then (request_cmd is used):
+  AssertEqual 'wget', g:RunCommand_cmd
+
+
+Execute (MakeRequest with any command):
+  call requester#request#MakeRequest(
+  \  {'request_cmd': 'wget {}', 'url': 'example.com'},
+  \  function('RunCommand'),
+  \  function('Autoformat')
+  \)
+
+Then (Curly brackets are substituted with URL):
+  AssertEqual 'wget example.com', g:RunCommand_cmd
 
 
 Execute (MakeRequest with no autoformat option set):
