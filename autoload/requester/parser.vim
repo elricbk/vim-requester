@@ -5,12 +5,11 @@ function! requester#parser#ParseRequestLines(begin, end) abort
     let URL_RGX = '\v^ *(([-a-zA-Z0-9]+\.)+[-a-zA-Z0-9]+|.*://.*|/.*) *$'
     let PARAM_RGX = '^[a-z_]\+\zs *= *'
 
-    let i = a:begin
-    let line_count = a:end
     let result = {}
     let url = ''
     let params = []
-    while i <= line_count
+    let i = a:begin
+    while i <= a:end
         let l = getline(i)
         if l =~ REQUEST_CMD_RGX
             let result.request_cmd = substitute(l, REQUEST_CMD_RGX, '', '')
