@@ -143,5 +143,5 @@ Given (Param with slash):
 Do (Join URI):
   \<Space>j
 
-Expect (Correctly encodes param with slash):
+Expect (Correctly encoded param with slash):
   www.example.com?p=test%2F1.x&q=42
