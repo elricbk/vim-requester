@@ -18,8 +18,7 @@ function! requester#main#JoinLines() abort
     while l >= 1
         let line = getline(l)
         let is_comment = (line =~ '^#')
-        " FIXME: use better regex for param, as this doesn't support upper case
-        let is_commented_param = (line =~ '^# *[a-z_]\+\zs *= *')
+        let is_commented_param = (line =~ '^#\s*\S\+\s*=')
         if is_comment && !is_commented_param
             break
         endif

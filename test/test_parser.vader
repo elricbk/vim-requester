@@ -21,3 +21,25 @@ Execute (ParseRequestLines):
 
 Then (no_autoformat is set):
   AssertEqual 1, result.no_autoformat
+
+
+Given (Parameter starting with space):
+  example.com
+    p = 42
+
+Execute (ParseRequestLines):
+  let result = requester#parser#ParseRequestLines(1, line('$'))
+
+Then (Parameter is added to resulting URL):
+  AssertEqual 'example.com?p=42', result.url
+
+
+Given (Parameter with uppercase letters):
+  example.com
+  SomeParam = 42
+
+Execute (ParseRequestLines):
+  let result = requester#parser#ParseRequestLines(1, line('$'))
+
+Then (Parameter is added to resulting URL):
+  AssertEqual 'example.com?SomeParam=42', result.url

@@ -3,8 +3,7 @@ function! requester#parser#ParseRequestLines(begin, end) abort
     let FILETYPE_RGX = '^# \+@filetype \+'
     let NO_AUTOFORMAT_RGX = '^# \+@no_autoformat'
     let URL_RGX = '\v^ *(([-a-zA-Z0-9]+\.)+[-a-zA-Z0-9]+|.*://.*|/.*) *$'
-    " FIXME: use better regex for param, as this doesn't support upper case
-    let PARAM_RGX = '^[a-z_]\+\zs *= *'
+    let PARAM_RGX = '^\s*\S\+\s*='
 
     let result = {}
     let url = ''
