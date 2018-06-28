@@ -12,19 +12,7 @@ endfunction
 
 function! requester#main#JoinLines() abort
     let result = requester#parser#ParseRequestLines(1, line('$'))
-
-    " TODO: move to utils
-    let l = line('$')
-    while l >= 1
-        let line = getline(l)
-        let is_comment = (line =~ '^#')
-        let is_commented_param = (line =~ '^#\s*\S\+\s*=')
-        if is_comment && !is_commented_param
-            break
-        endif
-        let l -= 1
-    endwhile
-
+    let l = requester#utils#FindLastCommentLine()
     execute 'normal! ' . (l + 1) . 'G"_dG'
     call append(l, result.url)
     if l == 0

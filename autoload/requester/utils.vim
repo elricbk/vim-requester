@@ -43,3 +43,17 @@ function! requester#utils#GetFileType(lines) abort
     endif
 endfunction
 
+function! requester#utils#FindLastCommentLine() abort
+    let result = line('$')
+    while result >= 1
+        let line = getline(result)
+        let is_comment = (line =~ '^#')
+        let is_commented_param = (line =~ '^#\s*\S\+\s*=')
+        if is_comment && !is_commented_param
+            break
+        endif
+        let result -= 1
+    endwhile
+    return result
+endfunction
+

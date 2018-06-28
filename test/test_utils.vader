@@ -60,3 +60,49 @@ Then (Default filetype is returned):
   AssertEqual 'txt', ft
 
 
+Given (Commented last line):
+  # These
+  are
+  # some commented lines
+
+Execute (FindLastCommentLine):
+  let l = requester#utils#FindLastCommentLine()
+
+Then (Last line is returned):
+  AssertEqual 3, l
+
+
+Given (Commented non-last line):
+  # These
+  # are some commented
+  lines
+
+Execute (FindLastCommentLine):
+  let l = requester#utils#FindLastCommentLine()
+
+Then (Expected line is returned):
+  AssertEqual 2, l
+
+
+Given (No commented lines):
+  no
+  commented
+  lines
+
+Execute (FindLastCommentLine):
+  let l = requester#utils#FindLastCommentLine()
+
+Then (Zero is returned):
+  AssertEqual 0, l
+
+
+Given (Some commented params):
+  # comment
+  example.com
+  # q = 42
+
+Execute (FindLastCommentLine):
+  let l = requester#utils#FindLastCommentLine()
+
+Then (Commented params are skipped):
+  AssertEqual 1, l
