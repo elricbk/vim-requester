@@ -1,6 +1,6 @@
 function! requester#utils#FindBufferById(buffer_id) abort
     if (bufexists(a:buffer_id))
-        let mpcwin = bufwinnr(a:buffer_id) 
+        let mpcwin = bufwinnr(a:buffer_id)
         if (mpcwin == -1)
             execute "vs | buffer " . bufnr(a:buffer_id)
         else
@@ -44,12 +44,17 @@ function! requester#utils#GetFileType(lines) abort
 endfunction
 
 function! requester#utils#FindLastCommentLine() abort
+    let COMMENT_RGX = '^#'
+    let PARAM_RGX = '^#\s*\S\+\s*='
+    let URL_RGX = '\v^# *(([-a-zA-Z0-9]+\.)+[-a-zA-Z0-9]+|.*://.*|/.*) *$'
+
     let result = line('$')
     while result >= 1
         let line = getline(result)
-        let is_comment = (line =~ '^#')
-        let is_commented_param = (line =~ '^#\s*\S\+\s*=')
-        if is_comment && !is_commented_param
+        let is_comment = (line =~ COMMENT_RGX)
+        let is_commented_param = (line =~ PARAM_RGX)
+        let is_commented_url = (line =~ URL_RGX)
+        if is_comment && !is_commented_param && !is_commented_url
             break
         endif
         let result -= 1

@@ -145,3 +145,15 @@ Do (Join URI):
 
 Expect (Correctly encoded param with slash):
   www.example.com?p=test%2F1.x&q=42
+
+
+Given (Commented URL with scheme):
+  www.example.com
+  # http://vim.com
+  p = 42
+
+Do (Join URL):
+  \<Space>j
+
+Expect (Correctly joined URL):
+  www.example.com?p=42

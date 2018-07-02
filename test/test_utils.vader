@@ -106,3 +106,15 @@ Execute (FindLastCommentLine):
 
 Then (Commented params are skipped):
   AssertEqual 1, l
+
+
+Given (Commented URL):
+  www.example.com
+  # http://vim.com
+  p = 42
+
+Execute (FindLastCommentLine):
+  let l = requester#utils#FindLastCommentLine()
+
+Then (Commented URL is skipped):
+  AssertEqual 0, l
