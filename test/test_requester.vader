@@ -7,13 +7,13 @@ After (Restore mapleader):
   Restore mapleader
 
 
-Given (URI):
+Given (URL):
   http://example.com?a=1&b=2&c=3
 
-Do (Split URI):
+Do (Split URL):
   \<Space>s
 
-Expect (Splitted URI):
+Expect (Splitted URL):
   http://example.com
 
   a = 1
@@ -21,37 +21,37 @@ Expect (Splitted URI):
   c = 3
 
 
-Given (URI with unknown scheme):
+Given (URL with unknown scheme):
   ololo://example.com?p=42
 
-Do (Split URI):
+Do (Split URL):
   \<Space>s
 
-Expect (Splitted URI):
+Expect (Splitted URL):
   ololo://example.com
 
   p = 42
 
 
-Given (URI part):
+Given (URL part):
   /method?p=42
 
-Do (Split URI):
+Do (Split URL):
   \<Space>s
 
-Expect (Splitted URI part):
+Expect (Splitted URL part):
   /method
 
   p = 42
 
 
-Given (URI with params with different length):
+Given (URL with params with different length):
   http://example.com?ll=42.,42.&spn=0.1,0.1&param=42
 
-Do (Split URI):
+Do (Split URL):
   \<Space>s
 
-Expect (Splitted URI with indented params):
+Expect (Splitted URL with indented params):
   http://example.com
 
   ll    = 42.,42.
@@ -59,10 +59,10 @@ Expect (Splitted URI with indented params):
   param = 42
 
 
-Given (URI with semicolons in params):
+Given (URL with semicolons in params):
   http://example.com?param=3;42
 
-Do (Split URI):
+Do (Split URL):
   \<Space>s
 
 Expect (Param with semicolon as a whole):
@@ -71,44 +71,44 @@ Expect (Param with semicolon as a whole):
   param = 3;42
 
 
-Given (Splitted URI without comments):
+Given (Splitted URL without comments):
   http://example.com
 
   a = 1
   b = 2
   c = 3
 
-Do (Join URI):
+Do (Join URL):
   \<Space>j
 
-Expect (Joined URI):
+Expect (Joined URL):
   http://example.com?a=1&b=2&c=3
 
 
-Given (Splitted URI with preceding comment):
+Given (Splitted URL with preceding comment):
   # This is example of some service
 
   http://example.com
   param = 42
 
-Do (Join URI):
+Do (Join URL):
   \<Space>j
 
-Expect (Joined URI with preceding comment and empty line):
+Expect (Joined URL with preceding comment and empty line):
   # This is example of some service
 
   http://example.com?param=42
 
 
-Given (Splitted URI with commented params):
+Given (Splitted URL with commented params):
   http://example.com
   #   b = 42
   param = 42
 
-Do (Join URI):
+Do (Join URL):
   \<Space>j
 
-Expect (Joined URI without commented params):
+Expect (Joined URL without commented params):
   http://example.com?param=42
 
 
@@ -117,10 +117,10 @@ Given (Splitted URL part):
   p = 42
   q = 84
 
-Do (Join URI):
+Do (Join URL):
   \<Space>j
 
-Expect (Joined URI part):
+Expect (Joined URL part):
   /method?p=42&q=84
 
 
@@ -128,10 +128,10 @@ Given (Splitted URL without scheme):
   www.example.com
   p = 42
 
-Do (Join URI):
+Do (Join URL):
   \<Space>j
 
-Expect (Joined URI part):
+Expect (Joined URL part):
   www.example.com?p=42
 
 
@@ -140,7 +140,7 @@ Given (Param with slash):
   p = test/1.x
   q = 42
 
-Do (Join URI):
+Do (Join URL):
   \<Space>j
 
 Expect (Correctly encoded param with slash):
