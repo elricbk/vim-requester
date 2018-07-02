@@ -2,7 +2,7 @@ function! requester#parser#ParseRequestLines(begin, end) abort
     let REQUEST_CMD_RGX = '^# \+@request_cmd \+'
     let FILETYPE_RGX = '^# \+@filetype \+'
     let NO_AUTOFORMAT_RGX = '^# \+@no_autoformat'
-    let URL_RGX = '\v^ *(([-a-zA-Z0-9]+\.)+[-a-zA-Z0-9]+|.*://.*|/.*) *$'
+    let URL_RGX = '\v^ *(([-a-zA-Z0-9]+\.)+[-a-zA-Z0-9]+|[^#]*://.*|/.*) *$'
     let PARAM_RGX = '^\s*\S\+\s*='
 
     let result = {}

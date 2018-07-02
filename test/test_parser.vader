@@ -43,3 +43,15 @@ Execute (ParseRequestLines):
 
 Then (Parameter is added to resulting URL):
   AssertEqual 'example.com?SomeParam=42', result.url
+
+
+Given (Commented URL with scheme):
+  www.example.com
+  # http://vim.com
+  p = 42
+
+Execute (ParseRequestLines):
+  let result = requester#parser#ParseRequestLines(1, line('$'))
+
+Then (Commented URL is skipped):
+  AssertEqual 'www.example.com?p=42', result.url
