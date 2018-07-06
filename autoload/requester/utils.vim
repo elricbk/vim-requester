@@ -1,10 +1,10 @@
 function! requester#utils#FindBufferById(buffer_id) abort
     if (bufexists(a:buffer_id))
-        let mpcwin = bufwinnr(a:buffer_id)
-        if (mpcwin == -1)
+        let winnr = bufwinnr(a:buffer_id)
+        if (winnr == -1)
             execute "vs | buffer " . bufnr(a:buffer_id)
         else
-            execute mpcwin . 'wincmd w'
+            execute winnr . 'wincmd w'
         endif
     else
         execute "vnew " . a:buffer_id
