@@ -157,3 +157,16 @@ Do (Join URL):
 
 Expect (Correctly joined URL):
   www.example.com?p=42
+
+
+Given (Param with URL-like value):
+  www.example.com
+
+  q = http://www.other.com
+  p = 42
+
+Do (Join URL):
+  \<Space>j
+
+Expect (Correctly joined URL):
+  www.example.com?q=http%3A%2F%2Fwww.other.com&p=42
