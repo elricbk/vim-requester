@@ -24,7 +24,7 @@ This gives you all the power of Vim for editing, navigating and folding of resul
 
 ## Requirements
 
-`+python`
+`+python3`
 As URL decoding and encoding are done with Python.
 
 ## Functions

@@ -2,20 +2,20 @@ function! requester#urlparse#UrlParse(request)
     let l:url_wrapper = []
     let l:params = []
 
-python << endpython
+python3 << endpython
 import vim
 request = vim.eval('a:request')
 url_wrapper = vim.bindeval('l:url_wrapper')
 params = vim.bindeval('l:params')
 
-import urlparse
+import urllib.parse
 
-parse_result = urlparse.urlparse(request)
+parse_result = urllib.parse.urlparse(request)
 url_wrapper.extend([
-    urlparse.urlunparse(parse_result._replace(query=''))
+    urllib.parse.urlunparse(parse_result._replace(query=''))
 ])
 params.extend(
-    urlparse.parse_qsl(
+    urllib.parse.parse_qsl(
         parse_result.query.replace(';', '%3B'),
         keep_blank_values=True
     )
@@ -31,7 +31,7 @@ endfunction
 
 function! requester#urlparse#UrlUnparse(url, params) abort
     let result_wrapper = []
-python << endpython
+python3 << endpython
 import vim
 url = vim.eval('a:url')
 param_string = vim.eval('a:params')
@@ -41,9 +41,9 @@ for p in param_string:
     key, value = map(str.strip, p.split('=', 1))
     params.append((key, value))
 
-import urllib
+import urllib.parse
 
-query = urllib.urlencode(params).replace('+', '%20')
+query = urllib.parse.urlencode(params).replace('+', '%20')
 
 if len(query) > 0:
     result_wrapper.extend([url + '?' + query])
